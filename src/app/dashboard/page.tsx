@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -17,11 +17,8 @@ export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   
-  useEffect(() => {
-    fetchUser();
-  }, []);
-  
-  const fetchUser = async () => {
+  // Use useCallback to memoize fetchUser function
+  const fetchUser = useCallback(async () => {
     try {
       const response = await fetch('/api/user');
       
@@ -38,7 +35,11 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [router]); // Add router as dependency
+  
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]); // Add fetchUser to dependency array
   
   const handleLogout = async () => {
     try {

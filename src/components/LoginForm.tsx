@@ -23,7 +23,6 @@ export default function LoginForm() {
       return false;
     }
     
-    // Validasi email jika input berupa email
     if (identifier.includes('@')) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(identifier)) {
@@ -58,10 +57,10 @@ export default function LoginForm() {
         return;
       }
       
-      // Redirect ke dashboard
       router.push('/dashboard');
       router.refresh();
-    } catch (err) {
+    } catch (error) {
+      console.error('Login error:', error);
       setError('An error occurred. Please try again.');
       setLoading(false);
     }
