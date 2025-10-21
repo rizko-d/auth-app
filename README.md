@@ -413,10 +413,10 @@ npm run seed         # Run database seeder
 
 ## 🚀 Deployment
 
-### Deploy ke Vercel
+### Deploy ke Railway
 
 1. Push code ke GitHub
-2. Import project di [vercel.com](https://vercel.com)
+2. Import project di [vercel.com](https://railway.com/)
 3. Set environment variables:
    - `DATABASE_URL`
    - `JWT_SECRET`
