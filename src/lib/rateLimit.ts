@@ -1,14 +1,4 @@
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
-
-// Jika tidak menggunakan Upstash, bisa gunakan in-memory rate limiter sederhana
-export const rateLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(5, '1 m'), // 5 request per menit
-  analytics: true,
-});
-
-// Alternative: Simple in-memory rate limiter (untuk development)
+// Simple in-memory rate limiter (no Upstash needed)
 const ipRequestMap = new Map<string, { count: number; timestamp: number }>();
 
 export function simpleRateLimit(ip: string, limit = 5, windowMs = 60000) {
