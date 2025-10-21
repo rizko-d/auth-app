@@ -12,7 +12,6 @@ Sistem autentikasi modern dan aman dengan Next.js 15, MySQL, dan JWT-based authe
 - [Architecture](#-architecture)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
 
 ## 🛠️ Tech Stack
 
