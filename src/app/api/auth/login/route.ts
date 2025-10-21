@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for') || 'unknown';
-    const { success, remaining } = simpleRateLimit(ip);
+    const { success } = simpleRateLimit(ip); // Remove unused 'remaining'
     
     if (!success) {
       return NextResponse.json(

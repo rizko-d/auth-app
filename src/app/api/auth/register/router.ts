@@ -36,8 +36,8 @@ export async function POST(request: NextRequest) {
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
-          { email: email },
-          { username: username },
+          { email: email.toLowerCase() },
+          { username: username.toLowerCase() },
         ],
       },
     });
@@ -55,36 +55,41 @@ export async function POST(request: NextRequest) {
     // Buat user baru
     const user = await prisma.user.create({
       data: {
-        email: email,
-        username: username,
+        email: email.toLowerCase(),
+        username: username.toLowerCase(),
         password: hashedPassword,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        createdAt: true,
       },
     });
     
     return NextResponse.json(
       { 
         message: 'User registered successfully',
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username
-        }
+        user: user
       },
       { status: 201 }
     );
     
-  } catch (error: any) {
+  } catch (error: unknown) { 
     console.error('Registration error:', error);
     
-    if (error.code === 'P2002') {
-      return NextResponse.json(
-        { error: 'Email or username already exists' },
-        { status: 409 }
-      );
+    if (error && typeof error === 'object' && 'code' in error) {
+      const prismaError = error as { code: string };
+      if (prismaError.code === 'P2002') {
+        return NextResponse.json(
+          { error: 'Email or username already exists' },
+          { status: 409 }
+        );
+      }
     }
     
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
